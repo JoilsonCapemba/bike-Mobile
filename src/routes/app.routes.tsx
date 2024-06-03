@@ -1,4 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { ConectedWithBike } from "@screens/ConectedWithBike/ConectedWithBike";
 import { GetStarted } from "@screens/GetStarted/Index";
 import { Login } from "@screens/Login";
 import { Station } from "@screens/Station";
@@ -26,6 +27,10 @@ export function AppRoutes(){
       <Screen
         name="station"
         component={Station}
+      />
+      <Screen
+        name="conectedWithBike"
+        component={ConectedWithBike}
       />
     </Navigator>
   )
