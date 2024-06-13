@@ -20,8 +20,8 @@ export function StationsBike(){
             <View style={styles.containerSearch}>
                 <TextInput 
                     style={styles.inputForm}
-                    placeholder="Informe o seu Username"
-                    placeholderTextColor={'#fff'}
+                    placeholder="Informe o nome da Estacao"
+                    placeholderTextColor={'#c4c1c1'}
                     keyboardType="email-address"
                 />
 

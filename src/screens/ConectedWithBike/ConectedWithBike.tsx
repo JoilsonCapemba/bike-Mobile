@@ -7,6 +7,7 @@ import {requestForegroundPermissionsAsync,
         watchPositionAsync,
         LocationAccuracy,
 } from 'expo-location'
+
 import MapView, { Marker } from "react-native-maps";
 import { useEffect, useState, useRef } from "react";
 import { HeaderPage } from "@components/HeaderPage/Index";
@@ -50,11 +51,18 @@ export function ConectedWithBike(){
   return(
     <View style={styles.container}>
       <View style={styles.content}>
-        <HeaderPage/>
+        <HeaderPage />
         <PerfilResume/>
-        <Text>
-
-        </Text>
+        <View style={styles.contentMenu}>
+          <View >
+            <Image source={require('@assets/chat-solid-24.png')} style={styles.imgLog}/>
+            <Text style={styles.logoTitle}>share Point</Text>
+          </View>
+          <View >
+            <Image source={require('@assets/chat-solid-24.png')} style={styles.imgLog}/>
+            <Text style={styles.logoTitle}>Chat</Text>
+          </View>
+        </View>
       </View>
       {
         location &&

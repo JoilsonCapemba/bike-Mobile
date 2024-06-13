@@ -26,7 +26,7 @@ export function Login(){
       />
       
 
-      <TouchableOpacity style={styles.btnGetStarted} onPress={()=> navigation.navigate('conectedWithBike')}>
+      <TouchableOpacity style={styles.btnGetStarted} onPress={()=> navigation.navigate('stationsBike')}>
         <Text style={styles.btnText}>Entrar</Text>
       </TouchableOpacity>
     </View>

@@ -18,6 +18,8 @@ inputForm:{
     borderRadius: 10,
     padding: 10,
     flex: 1,
+    color: '#fff',
+    fontSize: 18
    },
    containerSearch:{
     flexDirection: 'row',
