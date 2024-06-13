@@ -3,23 +3,27 @@ import {StyleSheet} from 'react-native'
 export const styles = StyleSheet.create({
  container:{
    flex: 1,
-   backgroundColor: '#2E2938',
+ },
+ map:{
+  flex: 1,
+  width: "100%"
  },
  title:{
-    margin: 100,
+    margin: 10,
     alignSelf: 'center',
     color: '#fff',
     fontSize: 24,
     fontWeight: 'bold'
  },
  contentStation:{
-    flex: 1,
     backgroundColor: '#2E2938',
-    paddingHorizontal: 18,
-    gap: 30
+    borderRadius: 15,
+    justifyContent: 'center',
+    padding: 20,
+    width: 'auto'
   },
   btnText: {
-    fontSize: 24,
+    fontSize: 18,
     alignItems: 'center',
     textAlign: 'center',
     color: '#fff',
@@ -27,9 +31,13 @@ export const styles = StyleSheet.create({
   },
   btn:{
     backgroundColor: '#B4ACF9',
-    width: 150,
-    height: 50,
+    padding: 9,
+    width: 100,
     borderRadius: 10,
     alignSelf: 'center'
   },
+  avatar:{
+    width: 30,
+    height: 30
+  }
 })

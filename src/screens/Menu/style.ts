@@ -26,8 +26,8 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   btn:{
-    backgroundColor: '#B4ACF9',
-    width: 150,
+    backgroundColor: '#504A55',
+    width: '100%',
     height: 50,
     borderRadius: 10,
     alignSelf: 'center'
