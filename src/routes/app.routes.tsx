@@ -1,5 +1,6 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { ConectedWithBike } from "@screens/ConectedWithBike/ConectedWithBike";
+import { CreateAccount } from "@screens/CreateAccount";
 import { GetStarted } from "@screens/GetStarted/Index";
 import { Login } from "@screens/Login";
 import { Menu } from "@screens/Menu";
@@ -20,6 +21,10 @@ export function AppRoutes(){
       <Screen
         name="login"
         component={Login}
+      />
+      <Screen
+        name="createAccount"
+        component={CreateAccount}
       />
       <Screen
         name="stationsBike"

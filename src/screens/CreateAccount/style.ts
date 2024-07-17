@@ -1,4 +1,3 @@
-import { Link } from '@react-navigation/native'
 import {StyleSheet} from 'react-native'
 
 export const styles = StyleSheet.create({
@@ -39,13 +38,5 @@ export const styles = StyleSheet.create({
   color: '#fff',
   fontSize: 18
  },
- link:{
-  color: 'orange',
-  fontSize: 14
- },
- dica:{
-  color: '#fff',
-  fontSize: 14
- }
  
 })
