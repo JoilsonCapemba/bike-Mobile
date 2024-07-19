@@ -55,12 +55,16 @@ export function ConectedWithBike(){
         <PerfilResume/>
         <View style={styles.contentMenu}>
           <View >
-            <Image source={require('@assets/chat-solid-24.png')} style={styles.imgLog}/>
-            <Text style={styles.logoTitle}>share Point</Text>
+            <TouchableOpacity>
+              <Image source={require('@assets/chat-solid-24.png')} style={styles.imgLog}/>
+              <Text style={styles.logoTitle}>share Point</Text>
+            </TouchableOpacity>
           </View>
           <View >
-            <Image source={require('@assets/chat-solid-24.png')} style={styles.imgLog}/>
-            <Text style={styles.logoTitle}>Chat</Text>
+            <TouchableOpacity onPress={()=> navigation.navigate('chat')}>
+              <Image source={require('@assets/chat-solid-24.png')} style={styles.imgLog}/>
+              <Text style={styles.logoTitle}>Chat</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>

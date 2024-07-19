@@ -4,9 +4,12 @@ import { Login } from '@screens/Login';
 import { Station } from '@screens/Station';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import { AuthProvider } from 'src/context';
 
 export default function App() {
   return (
-    <Routes/>
+    <AuthProvider>
+      <Routes/>
+    </AuthProvider>
   );
 }

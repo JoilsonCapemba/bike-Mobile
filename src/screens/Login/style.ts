@@ -20,7 +20,8 @@ export const styles = StyleSheet.create({
    width: 150,
    height: 50,
    borderRadius: 10,
-   marginTop: 20
+   marginTop: 20,
+   justifyContent: 'center',
  },
  btnText: {
    fontSize: 24,

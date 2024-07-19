@@ -13,19 +13,22 @@ export function Menu(){
         <View style={styles.container}>
             <HeaderPage/>
             <PerfilResume/>
-            <Text style={styles.title}>SuleniaStation</Text>
+            <Text style={styles.title}>MENU</Text>
             <View style={styles.content}>
-                <StationResume stationName="estado"/>
-                <TouchableOpacity style={styles.btn} >
-                    <Text style={styles.btnText}>Home</Text>
+                <TouchableOpacity style={styles.btn} onPress={()=> navigation.navigate('stationsBike')}>
+                    <Text style={styles.btnText}>ESTAÇOES</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.btn} onPress={()=> navigation.navigate('perfil')}>
+                    <Text style={styles.btnText}>PERFIL</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.btn} >
-                    <Text style={styles.btnText}>perfil</Text>
+                    <Text style={styles.btnText}>ENVIAR PONTOS</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.btn} >
-                    <Text style={styles.btnText}>estacoes</Text>
+                <TouchableOpacity style={styles.btn}  onPress={()=>navigation.navigate('login')}>
+                    <Text style={styles.btnText}>TERMINAR SESSAO</Text>
                 </TouchableOpacity>
             </View>
         </View>

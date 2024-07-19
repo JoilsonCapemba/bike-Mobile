@@ -38,7 +38,8 @@ export function CreateAccount(){
 
     createUser(user)
 
-    navigation.navigate('stationsBike')
+
+    navigation.navigate('login')
   }
 
   return(

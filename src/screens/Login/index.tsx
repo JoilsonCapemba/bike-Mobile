@@ -1,23 +1,28 @@
 import { View , Text , Image, TouchableOpacity, TextInput, Alert} from "react-native";
 import { styles } from "./style";
 import { useNavigation } from "@react-navigation/native";
-import {login} from './../../services/UserServices'
-import { useState } from "react";
+import {loginService} from './../../services/UserServices'
+import { useContext, useState } from "react";
+import { Context } from "src/context";
 
 
 export function Login(){
   const navigation = useNavigation()
+  const context = useContext(Context)
 
   const [telefone, SetTelefone] = useState('')
   const [senha, SetSenha] = useState('')
 
   async function loginUser() {
-    if(login(telefone, senha)){
-      navigation.navigate('stationsBike')
+    const login = await loginService(telefone,senha)
+    if(login){
+        context?.setUser(login.name)
+        context?.setTelephone(login.telephone)
+        context?.setEmail(login.email)
+        context?.setSaldo(login.saldo) 
+        navigation.navigate('stationsBike')
     }else{
-      Alert.alert("Dados incorretos", "tentar novamente",[
-        text
-      ])
+      Alert.alert("Dados incorretos", "tentar novamente")
     }
   }
 
@@ -39,11 +44,12 @@ export function Login(){
         placeholder="Informe a sua senha"
         placeholderTextColor={'#fff'}
         keyboardType="visible-password"
+        secureTextEntry={true}
         onChangeText={senha => SetSenha(senha)}
       />
       
 
-      <TouchableOpacity style={styles.btnGetStarted} onPress={()=> loginUser}>
+      <TouchableOpacity style={styles.btnGetStarted} onPress={loginUser}>
         <Text style={styles.btnText}>Entrar</Text>
       </TouchableOpacity>
 

@@ -8,7 +8,8 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import MapViewDirections from 'react-native-maps-directions';
 import MapView, { Marker } from "react-native-maps";
 import { LocationObject } from "expo-location";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { AuthProvider, Context } from "src/context";
 
 interface propsCoords {
     latitude: number,
@@ -29,6 +30,7 @@ const finalProps = {
 }
 
 export function Station(){
+    const context = useContext(Context)
 
     const [origin, setOrigin] = useState<propsCoords>(initialProps);
     const [destination, setDestination] = useState<propsCoords>(finalProps);

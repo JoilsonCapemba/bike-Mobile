@@ -25,6 +25,7 @@
     width: 150,
     height: 50,
     borderRadius: 10,
+    justifyContent: 'center',
   },
   btnText: {
     fontSize: 24,

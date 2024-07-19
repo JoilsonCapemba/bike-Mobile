@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
    backgroundColor: '#2E2938',
  },
  title:{
-    margin: 100,
+    margin: 80,
     alignSelf: 'center',
     color: '#fff',
     fontSize: 24,
@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#2E2938',
     paddingHorizontal: 18,
-    gap: 30
+    gap: 10
   },
   btnText: {
     fontSize: 24,
@@ -30,6 +30,7 @@ export const styles = StyleSheet.create({
     width: '100%',
     height: 50,
     borderRadius: 10,
-    alignSelf: 'center'
+    alignSelf: 'center',
+    justifyContent: 'center',
   },
 })

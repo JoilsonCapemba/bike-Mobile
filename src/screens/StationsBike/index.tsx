@@ -2,13 +2,16 @@ import { HeaderPage } from "@components/HeaderPage/Index";
 import { Button, FlatList, Image, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { styles } from "./style";
 import { PerfilResume } from "@components/PerfilResume";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { OptionMenu } from "@components/OptionMenu";
 import { StationResume } from "@components/StationResume";
 import { useNavigation } from "@react-navigation/native";
+import { Context } from "src/context";
 
 
 export function StationsBike(){
+    const context = useContext(Context)
+
    const [stations, setStations] = useState(['sulenia','capemba','botelho']) 
    const navigation = useNavigation()
 
