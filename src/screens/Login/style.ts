@@ -42,9 +42,11 @@ export const styles = StyleSheet.create({
  },
  link:{
   color: 'orange',
-  fontSize: 14
+  fontSize: 14,
+  
  },
  dica:{
+  marginTop: 15,
   color: '#fff',
   fontSize: 14
  }

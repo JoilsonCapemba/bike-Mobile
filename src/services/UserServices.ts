@@ -13,7 +13,7 @@ type Userprops = {
     enderecoMac: string
 }
 
-const url = 'https://daf2-105-172-253-186.ngrok-free.app/ws/users.wsdl'
+const url = 'https://a756-129-122-221-10.ngrok-free.app/ws/users.wsdl'
 
 export const createUser = async (user: Userprops)  => {
     console.log('entrou')

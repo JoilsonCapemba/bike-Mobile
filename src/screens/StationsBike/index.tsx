@@ -7,13 +7,19 @@ import { OptionMenu } from "@components/OptionMenu";
 import { StationResume } from "@components/StationResume";
 import { useNavigation } from "@react-navigation/native";
 import { Context } from "src/context";
+import { StationsContext } from "src/context/stationsContext";
 
 
 export function StationsBike(){
     const context = useContext(Context)
+    const stationsContext = useContext(StationsContext)
 
-   const [stations, setStations] = useState(['sulenia','capemba','botelho']) 
+    
+
+   const [stations, setStations] = useState(stationsContext?.stations) 
    const navigation = useNavigation()
+
+   console.log(stations)
 
     return(
         <View style={styles.container}>
@@ -39,7 +45,7 @@ export function StationsBike(){
                     data={stations}
                     keyExtractor={item => item}
                     renderItem={({item})=> (
-                        <StationResume stationName={item} onPress={()=> navigation.navigate('station')}/>
+                        <StationResume stationName={item['serviceName']} onPress={()=> navigation.navigate('station')}/>
                     )}
                 />
             </View>

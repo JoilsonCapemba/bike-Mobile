@@ -5,11 +5,14 @@ import { Station } from '@screens/Station';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { AuthProvider } from 'src/context';
+import { StationsAuthProvider } from 'src/context/stationsContext';
 
 export default function App() {
   return (
     <AuthProvider>
-      <Routes/>
+      <StationsAuthProvider>
+              <Routes/>
+      </StationsAuthProvider>
     </AuthProvider>
   );
 }

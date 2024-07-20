@@ -77,6 +77,7 @@ export function CreateAccount(){
         placeholder="Informe a sua senha"
         placeholderTextColor={'#fff'}
         keyboardType="visible-password"
+        secureTextEntry={true}
         onChangeText={senha => SetSenha(senha)}
       />
       

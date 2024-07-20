@@ -35,7 +35,6 @@ export function Chat(){
 
             <View style={styles.containerMessages}>
                 <FlatList
-                    style={styles.list}
                     data={menssages}
                     keyExtractor={item => item}
                     renderItem={({item})=> (
