@@ -14,7 +14,7 @@ type Userprops = {
     enderecoMac: string
 }
 
-const url = 'https://a756-129-122-221-10.ngrok-free.app/ws/services.wsdl'
+const url = 'https://9294-129-122-221-10.ngrok-free.app/ws/services.wsdl'
 
 
 
