@@ -13,12 +13,12 @@ type Userprops = {
     enderecoMac: string
 }
 
-const url = 'https://9294-129-122-221-10.ngrok-free.app/ws/users.wsdl'
+const url = 'https://0830-105-168-223-215.ngrok-free.app/ws/users.wsdl'
 
 export const createUser = async (user: Userprops)  => {
     console.log('entrou')
     try{
-        const xmls =`<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:int="http://interfaces.bikeshared.uan.com">
+        const xmls =`<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:int="http://interfaces.uan.com">
                     <soapenv:Header/>
                     <soapenv:Body>
                         <int:createUserRequest>
@@ -64,7 +64,7 @@ export const createUser = async (user: Userprops)  => {
 export const loginService = async (telefone: string, password: string)  => {
     console.log('entrou')
     try{
-        const xmls =`<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:int="http://interfaces.bikeshared.uan.com">
+        const xmls =`<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:int="http://interfaces.uan.com">
                     <soapenv:Header/>
                     <soapenv:Body>
                         <int:loginRequest>

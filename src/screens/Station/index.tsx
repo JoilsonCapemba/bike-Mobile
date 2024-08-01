@@ -1,100 +1,140 @@
 import { HeaderPage } from "@components/HeaderPage/Index";
 import { styles } from "./style";
-import { Text, View, TouchableOpacity, SafeAreaView, StatusBar, Image } from "react-native";
+import { Text, View, TouchableOpacity, SafeAreaView, Image } from "react-native";
 import { PerfilResume } from "@components/PerfilResume";
-import { StationResume } from "@components/StationResume";
-import { NumberBikes } from "@components/NumberBikes";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import MapViewDirections from 'react-native-maps-directions';
 import MapView, { Marker } from "react-native-maps";
 import { LocationObject } from "expo-location";
-import { useContext, useState } from "react";
-import { AuthProvider, Context } from "src/context";
+import { useContext, useState, useEffect } from "react";
+import { Context } from "src/context";
+import { getStation } from 'src/services/StatiosService';
 
-interface propsCoords {
-    latitude: number,
-    longitude: number,
-    description: string
+// Interface para coordenadas
+interface PropsCoords {
+  latitude: number;
+  longitude: number;
+  description: string;
 }
 
-const initialProps = {
-    latitude : -8.8408064,
-    longitude: 13.2349952,
-    description: ''
+// Interface para estação
+interface StationDetails {
+  serviceName: string;
+  serviceUrl: string;
+  id: number;
+  latitude: number;
+  longitude: number;
+  capacity: number;
+  availableBikes: number;
+  availableDocks: number;
+  deliveryBonus: number;
 }
 
-const finalProps = {
-    latitude : -8.9355051,
-    longitude: 13.2678549,
-    description: ''
-}
+// Dados iniciais de coordenadas
+const initialProps: PropsCoords = {
+  latitude: -8.8408064,
+  longitude: 13.2349952,
+  description: ''
+};
 
-export function Station(){
-    const context = useContext(Context)
+export function Station() {
+  const context = useContext(Context);
+  const route = useRoute();
+  const { stationName } = route.params as { stationName: string };
 
-    const [origin, setOrigin] = useState<propsCoords>(initialProps);
-    const [destination, setDestination] = useState<propsCoords>(finalProps);
-    const GOOGLE_MAPS_APIKEY = 'AIzaSyDAkhxgB_X0mvhcBPVZDXsnslh34uO4dv0';
-    const [location, setLocation] = useState<LocationObject | null>(null)
-    const navigation = useNavigation()
+  const [station, setStation] = useState<StationDetails | null>(null);
+  const [origin, setOrigin] = useState<PropsCoords>(initialProps);
+  const [location, setLocation] = useState<LocationObject | null>(null);
+  const navigation = useNavigation();
 
-    return(
-        <SafeAreaView style={styles.container}>
-            <MapView style={styles.map}
-                mapType="mutedStandard"
-                initialRegion={{
-                    latitude: origin.latitude,
-                    longitude: origin.longitude,
-                    latitudeDelta: 0.005,
-                    longitudeDelta: 0.005
-                    }}
-                zoomControlEnabled
-                minZoomLevel={5}
-                maxZoomLevel={15}
-                scrollEnabled
-            >
-                {/*
-                
-                <MapViewDirections
-                   origin={origin}
-                    destination={destination}
-                    apikey={GOOGLE_MAPS_APIKEY}
-                    strokeWidth={6}
-                    strokeColor="#B4ACF9"
-                />
-                */}
-            
+  useEffect(() => {
+    // Fetch station details from backend
+    const fetchStationDetails = async () => {
+      try {
+        const stationData = await getStation(stationName);
+        setStation(stationData);
+        setOrigin({
+          latitude: stationData.latitude,
+          longitude: stationData.longitude,
+          description: stationData.serviceName
+        });
+      } catch (error) {
+        console.error('Error fetching station details:', error);
+      }
+    };
 
-                
-                <Marker 
-                    coordinate={origin}
-                    title="Ponto A"
-                    description={origin.description}
-                    identifier="origin"
-                >
-                    <Image style={styles.avatar}  source={require('@assets/avatar.png') }/>
-                </Marker>
+    fetchStationDetails();
+  }, [stationName]);
 
-                <Marker 
-                    coordinate={destination}
-                    title="Ponto final"
-                    description={destination.description}
-                    identifier="origin"
-                >
-                    <Image style={styles.avatar} source={require('@assets/avatar.png')}/>
-                </Marker>
+  useEffect(() => {
+    // Configure a origem com base na localização atual se disponível
+    // Caso contrário, mantenha as coordenadas iniciais
+    if (location) {
+      setOrigin({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+        description: 'Current Location'
+      });
+    }
+  }, [location]);
 
-            </MapView>
+  if (!station) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <Text>Loading...</Text>
+      </SafeAreaView>
+    );
+  }
 
-        
-            <View style={styles.contentStation}>
-                <Text style={styles.title}>Statio Name</Text>
-                <StationResume stationName="estado"/>
-                <NumberBikes totalBike={5}/>
-                <TouchableOpacity style={styles.btn} onPress={()=> navigation.navigate('conectedWithBike')}>
-                    <Text style={styles.btnText}>Levantar</Text>
-                </TouchableOpacity>
-            </View>
-        </SafeAreaView>
-    )
+  return (
+    <SafeAreaView style={styles.container}>
+      <MapView
+        style={styles.map}
+        mapType="mutedStandard"
+        initialRegion={{
+          latitude: station.latitude,
+          longitude: station.longitude,
+          latitudeDelta: 0.005,
+          longitudeDelta: 0.005,
+        }}
+        zoomControlEnabled
+        minZoomLevel={5}
+        maxZoomLevel={15}
+        scrollEnabled
+      >
+        <Marker
+          coordinate={origin}
+          title="Ponto A"
+          description={origin.description}
+          identifier="origin"
+        >
+          <Image style={styles.avatar} source={require('@assets/avatar.png')} />
+        </Marker>
+
+        <Marker
+          coordinate={{
+            latitude: station.latitude,
+            longitude: station.longitude
+          }}
+          title="Ponto final"
+          description={station.serviceName}
+          identifier="destination"
+        >
+          <Image style={styles.avatar} source={require('@assets/avatar.png')} />
+        </Marker>
+      </MapView>
+
+      <View style={styles.contentStation}>
+        <Text style={styles.title}>{station.serviceName}</Text>
+        <Text style={styles.detailText}>Latitude: {station.latitude}</Text>
+        <Text style={styles.detailText}>Longitude: {station.longitude}</Text>
+        <Text style={styles.detailText}>Capacidade: {station.capacity}</Text>
+        <Text style={styles.detailText}>Bikes Disponíveis: {station.availableBikes}</Text>
+        <Text style={styles.detailText}>Docks Disponíveis: {station.availableDocks}</Text>
+        <Text style={styles.detailText}>Bônus de Entrega: {station.deliveryBonus}</Text>
+        <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('conectedWithBike')}>
+          <Text style={styles.btnText}>Levantar</Text>
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
+  );
 }

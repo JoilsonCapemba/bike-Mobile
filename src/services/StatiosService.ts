@@ -1,105 +1,90 @@
-import axios from "axios"
-import {DOMParser} from 'xmldom';
-import {xml2json} from 'xml-js'
-import {XMLParser} from 'fast-xml-parser';
-import { useState } from "react";
+import axios from 'axios';
+import { XMLParser } from 'fast-xml-parser';
 
+// URL do endpoint SOAP
+const endpointUrl = 'https://0830-105-168-223-215.ngrok-free.app/ws';
 
-type Userprops = {
-    name: string
-    email: string
-    telefone: string
-    senha: string
-    tipo: number 
-    enderecoMac: string
-}
+export const getStations = async () => {
+  console.log('Fetching all stations');
+  try {
+    const xmls = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:int="http://interfaces.uan.com">
+                    <soapenv:Header/>
+                    <soapenv:Body>
+                      <int:getAllServicesRequest/>
+                    </soapenv:Body>
+                  </soapenv:Envelope>`;
 
-const url = 'https://9294-129-122-221-10.ngrok-free.app/ws/services.wsdl'
+    const response = await axios.post(endpointUrl, xmls, {
+      headers: {
+        'Content-Type': 'text/xml',
+      },
+    });
 
+    const parser = new XMLParser();
+    const jsonRes = parser.parse(response.data);
+    const servicesRes = jsonRes['SOAP-ENV:Envelope']['SOAP-ENV:Body']['ns2:getAllServicesResponse']['ns2:services'];
 
+    const results = servicesRes.map((element: any) => ({
+      serviceName: element['ns2:serviceName'],
+      serviceUrl: element['ns2:serviceUrl'],
+      id: element['ns2:id']
+    }));
 
-export const getStations = async ()  => {
-    console.log('entrou')
-    try{
-        const xmls =`<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:int="http://interfaces.bikeshared.uan.com">
-                        <soapenv:Header/>
-                        <soapenv:Body>
-                            <int:getAllServicesRequest/>
-                        </soapenv:Body>
-                        </soapenv:Envelope>`
+    console.log(results);
+    return results;
+  } catch (error) {
+    console.error('Erro ao buscar estações:', error);
+    throw new Error('Erro ao buscar estações.');
+  }
+};
 
-        let env = null
-                
-        const response = await axios.post(url, xmls,
-            {
-                headers:{
-                    'Content-Type': 'text/xml'
-                }
-            }
-        )
-        const parser = new XMLParser()
-        const jsonRes = parser.parse(response.data)
-        const servicesRes = jsonRes['SOAP-ENV:Envelope']['SOAP-ENV:Body']['ns2:getAllServicesResponse']
+export const getStation = async (stationName: string) => {
+  console.log('Fetching station details');
+  try {
+    const xmls = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:int="http://interfaces.uan.com">
+                    <soapenv:Header/>
+                    <soapenv:Body>
+                      <int:GetStationRequest>
+                        <int:stationName>${stationName}</int:stationName>
+                      </int:GetStationRequest>
+                    </soapenv:Body>
+                  </soapenv:Envelope>`;
 
-        
+    const response = await axios.post(endpointUrl, xmls, {
+      headers: {
+        'Content-Type': 'text/xml',
+      },
+    });
 
-        
-        /*const servicesArray = jsonRes['SOAP-ENV:Envelope']['SOAP-ENV:Body']['ns2:getAllServicesResponse']['ns2:services'];
-        setServices(Array.isArray(servicesArray) ? servicesArray : [servicesArray]);*/
+    const parser = new XMLParser({
+      ignoreAttributes: false,
+      attributeNamePrefix: ""
+    });
 
-            //console.log(servicesRes["ns2:services"][1]["ns2:id"])
+    // Adicione logs para depurar a resposta SOAP
+    console.log('SOAP Response:', response.data);
 
-            const results = []
+    const jsonRes = parser.parse(response.data);
+    const stationRes = jsonRes['SOAP-ENV:Envelope']['SOAP-ENV:Body']['ns2:GetStationResponse']['ns2:station'];
 
-            servicesRes["ns2:services"].forEach(Element =>{
-                const est = {
-                    serviceName:  Element['ns2:serviceName'],
-                    serviceUrl: Element['ns2:serviceUrl'],
-                    id:  Element['ns2:id']
-                }
+    // Adicione logs para depurar a estrutura da resposta JSON
+    console.log('Parsed JSON Response:', jsonRes);
 
-                results.push(est)
-            })
+    const stationDetails = {
+      id: parseInt(stationRes['ns2:id']),
+      name: stationRes['ns2:name'],
+      latitude: parseFloat(stationRes['ns2:latitude']),
+      longitude: parseFloat(stationRes['ns2:longitude']),
+      capacity: parseInt(stationRes['ns2:capacity']),
+      availableBikes: parseInt(stationRes['ns2:availableBikes']),
+      availableDocks: parseInt(stationRes['ns2:availableDocks']),
+      deliveryBonus: parseInt(stationRes['ns2:deliveryBonus']),
+    };
 
-            console.log(results)
-            
-            
-
-        
-            
-            
-
-            
-            
-            /*jsonRes['SOAP-ENV:Envelope']['SOAP-ENV:Body']['ns2:getAllServicesResponse'].array.forEach(element => {
-                const serviceName = element['ns2:services']['ns2:serviceName']
-                const serviceUrl = element['ns2:services']['ns2:serviceUrl']
-                const id = element['ns2:services']['ns2:id']
-
-                console.log(element)
-            });*/
-
-
-            /*for(let i = 0; i < servicesRes.lengh; i++){
-                const serviceName = servicesRes['ns2:services']['ns2:serviceName']
-                const serviceUrl = servicesRes['ns2:services']['ns2:serviceUrl']
-                const id = servicesRes['ns2:services']['ns2:id']
-
-                console.log(serviceName)
-
-                console.log(serviceUrl)
-                
-                const stat = {
-                    serName : serviceName,
-                    serUrl : serviceUrl,
-                    serId : id
-                }
-
-                }*/
-                return results
-    }
-    catch(error){
-        console.error('Erro ao buscar estacoes:', error);
-        throw new Error('Erro ao buscar estacoes.');
-    }
-}
+    console.log(stationDetails);
+    return stationDetails;
+  } catch (error) {
+    console.error('Erro ao buscar estação:', error);
+    throw new Error('Erro ao buscar estação.');
+  }
+};
