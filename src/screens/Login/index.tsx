@@ -1,80 +1,64 @@
-import { View , Text , Image, TouchableOpacity, TextInput, Alert} from "react-native";
-import { styles } from "./style";
+import React, { useContext, useState } from "react";
+import { View, Text, TextInput, TouchableOpacity, Alert, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import {loginService} from './../../services/UserServices'
-import { useContext, useState } from "react";
 import { Context } from "src/context";
-import { StationsContext } from "src/context/stationsContext";
-import { getStations } from "src/services/StatiosService";
+import { styles } from "./style";
+import { loginService } from 'src/services/UserServices'; // Certifique-se de que o caminho está correto
 
+export function Login() {
+  const navigation = useNavigation();
+  const context = useContext(Context);
 
-export function Login(){
-  const navigation = useNavigation()
-  const context = useContext(Context)
-
-  const statioContext = useContext(StationsContext)
-
-  const [telefone, SetTelefone] = useState('')
-  const [senha, SetSenha] = useState('')
+  const [telephone, setTelephone] = useState('');
+  const [password, setPassword] = useState('');
 
   async function loginUser() {
-    const login = await loginService(telefone,senha)
-    const stations = await getStations()
-    if(login){
-        context?.setUser(login.name)
-        context?.setTelephone(login.telephone)
-        context?.setEmail(login.email)
-        context?.setSaldo(login.saldo) 
+    try {
+      const user = await loginService(telephone, password);
 
-        //console.log(stations)
-
-        navigation.navigate('stationsBike') 
-
-        
-        statioContext?.setStations(stations)
-
-        /*statioContext?.setServiceName(stations.serviceName)
-        statioContext?.setServiceUrl(stations.serviceUrl)
-        statioContext?.setId(stations.id)*/
-
-    }else{
-      Alert.alert("Dados incorretos", "tentar novamente")
+      if (user) {
+        context?.setUser(user.name);
+        context?.setEmail(user.email);
+        context?.setTelephone(user.telephone);
+        context?.setSaldo(user.saldo); // Supondo que o saldo seja uma propriedade do usuário
+        navigation.navigate('stationsBike');
+      } else {
+        Alert.alert("Dados incorretos", "Tente novamente");
+      }
+    } catch (error) {
+      Alert.alert("Erro", "Ocorreu um erro ao tentar fazer login");
     }
   }
 
-  return(
+  return (
     <View style={styles.container}>
       <Image source={require('@assets/Logo.png')} />
       <Text style={styles.logoTitle}>BikeShare</Text>
 
-      <TextInput 
+      <TextInput
         style={styles.inputForm}
-        placeholder="Informe o seu Telefone"
+        placeholder="Informe o seu telefone"
         placeholderTextColor={'#fff'}
-        keyboardType="email-address"
-        onChangeText={telefone => SetTelefone(telefone)}
+        keyboardType="phone-pad"
+        onChangeText={telephone => setTelephone(telephone)}
       />
 
-      <TextInput 
+      <TextInput
         style={styles.inputForm}
         placeholder="Informe a sua senha"
         placeholderTextColor={'#fff'}
-        keyboardType="visible-password"
         secureTextEntry={true}
-        onChangeText={senha => SetSenha(senha)}
+        onChangeText={password => setPassword(password)}
       />
-      
 
       <TouchableOpacity style={styles.btnGetStarted} onPress={loginUser}>
         <Text style={styles.btnText}>Entrar</Text>
       </TouchableOpacity>
 
-      <Text style={styles.dica}>
-        Ainda não possui uma conta ? 
-      </Text>
+      <Text style={styles.dica}>Ainda não possui uma conta?</Text>
       <TouchableOpacity onPress={() => navigation.navigate('createAccount')}>
         <Text style={styles.link}>Criar Conta</Text>
       </TouchableOpacity>
     </View>
-  )
+  );
 }

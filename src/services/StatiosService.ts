@@ -2,7 +2,7 @@ import axios from 'axios';
 import { XMLParser } from 'fast-xml-parser';
 
 // URL do endpoint SOAP
-const endpointUrl = 'https://0830-105-168-223-215.ngrok-free.app/ws';
+const endpointUrl = 'https://90b6-129-122-244-245.ngrok-free.app/ws';
 
 export const getStations = async () => {
   console.log('Fetching all stations');

@@ -1,90 +1,81 @@
-import { View , Text , Image, TouchableOpacity, TextInput} from "react-native";
-import { styles } from "./style";
+import React, { useState } from "react";
+import { View, Text, TextInput, TouchableOpacity, Image, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { useState } from "react";
-import {createUser} from './../../services/UserServices'
+import { createUser } from 'src/services/UserServices';
+import { styles } from "./style";
 
-type User  = {
-    name: string
-    email: string
-    telefone: string
-    senha: string
-    tipo: number 
-    enderecoMac: string
-}
+export function CreateAccount() {
+  const navigation = useNavigation();
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [telephone, setTelephone] = useState('');
+  const [password, setPassword] = useState('');
 
-export function CreateAccount(){
-  const navigation = useNavigation()
-  const [name, SetName] = useState('joilson')
-  const [email, SetEmail] = useState('')
-  const [telefone, SetTelefone] = useState('')
-  const [senha, SetSenha] = useState('')
-  
-
-
-
-
-  async function hundlecreateAccount(){
-
-    const user = {
+  async function handleCreateAccount() {
+    try {
+      const user = {
         name: name,
         email: email,
-        telefone: telefone,
-        senha: senha,
-        tipo: 1,
-        enderecoMac: 'XXX xxx xxx'
+        telephone: telephone,
+        password: password,
+        type: 1, // Suponha que 1 seja o tipo de usuário padrão
+        macAddress: 'XX:XX:XX:XX:XX:XX' // Substitua pelo valor apropriado ou obtenha dinamicamente
+      };
 
+      console.log(user); // Adicione esta linha para verificar se os campos estão sendo preenchidos corretamente
+
+      const response = await createUser(user);
+
+      if (response) {
+        Alert.alert('Conta criada com sucesso!', 'Você pode agora fazer login.');
+        navigation.navigate('login');
+      }
+    } catch (error) {
+      Alert.alert('Erro ao criar conta', error.message);
     }
-
-    createUser(user)
-
-
-    navigation.navigate('login')
   }
 
-  return(
+  return (
     <View style={styles.container}>
       <Image source={require('@assets/Logo.png')} />
       <Text style={styles.logoTitle}>BikeShare</Text>
 
-      <TextInput 
+      <TextInput
         style={styles.inputForm}
         placeholder="Informe o seu Nome"
         placeholderTextColor={'#fff'}
-        keyboardType="default"
-        onChangeText={nome => SetName(nome)}
+        value={name}
+        onChangeText={setName}
       />
 
-      <TextInput 
+      <TextInput
         style={styles.inputForm}
         placeholder="Informe o seu Email"
         placeholderTextColor={'#fff'}
-        keyboardType="default"
-        onChangeText={email => SetEmail(email)}
+        value={email}
+        onChangeText={setEmail}
       />
 
-      <TextInput 
+      <TextInput
         style={styles.inputForm}
-        placeholder="Informe o seu numero de telefone"
+        placeholder="Informe o seu número de telefone"
         placeholderTextColor={'#fff'}
-        keyboardType="email-address"
-        onChangeText={telefone => SetTelefone(telefone)}
+        value={telephone}
+        onChangeText={setTelephone}
       />
 
-
-      <TextInput 
+      <TextInput
         style={styles.inputForm}
         placeholder="Informe a sua senha"
         placeholderTextColor={'#fff'}
-        keyboardType="visible-password"
         secureTextEntry={true}
-        onChangeText={senha => SetSenha(senha)}
+        value={password}
+        onChangeText={setPassword}
       />
-      
 
-      <TouchableOpacity style={styles.btnGetStarted} onPress={hundlecreateAccount}>
+      <TouchableOpacity style={styles.btnGetStarted} onPress={handleCreateAccount}>
         <Text style={styles.btnText}>Criar Conta</Text>
       </TouchableOpacity>
     </View>
-  )
+  );
 }

@@ -22,6 +22,7 @@
     "expo-permissions": "^14.4.0",
     "expo-status-bar": "~1.12.1",
     "fast-xml-parser": "^4.4.0",
+    "firebase": "^10.12.5",
     "react": "18.2.0",
     "react-native": "0.74.3",
     "react-native-ble-plx": "^3.2.1",

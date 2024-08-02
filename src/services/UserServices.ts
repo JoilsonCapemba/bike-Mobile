@@ -13,12 +13,12 @@ type Userprops = {
     enderecoMac: string
 }
 
-const url = 'https://0830-105-168-223-215.ngrok-free.app/ws/users.wsdl'
+const url = 'https://90b6-129-122-244-245.ngrok-free.app/ws/users.wsdl'
 
-export const createUser = async (user: Userprops)  => {
-    console.log('entrou')
-    try{
-        const xmls =`<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:int="http://interfaces.uan.com">
+export const createUser = async (user) => {
+    console.log('entrou', user); // Verifique se todos os dados estão sendo passados
+    try {
+        const xmls = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:int="http://interfaces.uan.com">
                     <soapenv:Header/>
                     <soapenv:Body>
                         <int:createUserRequest>
@@ -26,40 +26,31 @@ export const createUser = async (user: Userprops)  => {
                                 <int:userId>?</int:userId>
                                 <int:name>${user.name}</int:name>
                                 <int:email>${user.email}</int:email>
-                                <int:telephone>${user.telefone}</int:telephone>
-                                <int:password>${user.senha}</int:password>
-                                <int:type>${user.tipo}</int:type>
-                                <int:macAddress>${user.enderecoMac}</int:macAddress>
+                                <int:telephone>${user.telephone}</int:telephone>
+                                <int:password>${user.password}</int:password>
+                                <int:type>${user.type}</int:type>
+                                <int:macAddress>${user.macAddress}</int:macAddress>
                             </int:userInfo>
                         </int:createUserRequest>
                     </soapenv:Body>
-                    </soapenv:Envelope>`
+                    </soapenv:Envelope>`;
 
-        const response = await axios.post(url, xmls,
-            {
-                headers:{
-                    'Content-Type': 'text/xml'
-                }
+        const response = await axios.post(url, xmls, {
+            headers: {
+                'Content-Type': 'text/xml'
             }
-        )
+        });
 
-        // Analisar a resposta XML
-        /*parseString(response.data, (err, result) => {
-            if (err) {
-                console.error('Erro ao analisar a resposta XML:', err);
-            } else {
-                console.log('Resposta XML:', result);
-                // Processar a resposta XML
-            }
-        });*/
+        console.log('Resposta do servidor:', response.data);
         
-       return response
-    }
-    catch(error){
+        // Adicione lógica para analisar e processar a resposta se necessário
+        
+        return response.data;
+    } catch (error) {
         console.error('Erro ao criar usuário:', error);
         throw new Error('Erro ao criar usuário.');
     }
-}
+};
 
 export const loginService = async (telefone: string, password: string)  => {
     console.log('entrou')
