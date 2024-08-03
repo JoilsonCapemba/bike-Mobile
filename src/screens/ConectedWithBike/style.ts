@@ -32,5 +32,20 @@ export const styles = StyleSheet.create({
   gap: 40,
   justifyContent: 'center',
   marginTop: 10
+ },
+ btnText: {
+   fontSize: 18,
+   alignItems: 'center',
+   textAlign: 'center',
+   color: '#fff',
+   fontWeight: 'bold',
+ },
+ btn: {
+   backgroundColor: '#B4ACF9',
+   padding: 10,
+   width: '100%',
+   borderRadius: 10,
+   alignSelf: 'center',
+   marginTop: 10,
  }
 })

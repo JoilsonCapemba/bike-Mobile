@@ -50,24 +50,7 @@ export function ConectedWithBike(){
 
   return(
     <View style={styles.container}>
-      <View style={styles.content}>
-        <HeaderPage />
-        <PerfilResume/>
-        <View style={styles.contentMenu}>
-          {/* <View >
-            <TouchableOpacity onPress={()=> navigation.navigate('sendPoints')}>
-              <Image source={require('@assets/chat-solid-24.png')} style={styles.imgLog}/>
-              <Text style={styles.logoTitle}>share Point</Text>
-            </TouchableOpacity>
-          </View>
-          <View >
-            <TouchableOpacity onPress={()=> navigation.navigate('chat')}>
-              <Image source={require('@assets/chat-solid-24.png')} style={styles.imgLog}/>
-              <Text style={styles.logoTitle}>Chat</Text>
-            </TouchableOpacity>
-          </View> */}
-        </View>
-      </View>
+      
       {
         location &&
       <MapView
@@ -90,6 +73,10 @@ export function ConectedWithBike(){
             
       </MapView>
     }
+
+      <TouchableOpacity style={styles.btn} >
+          <Text style={styles.btnText}>Devolver</Text>
+        </TouchableOpacity>
     </View>
   )
 }
