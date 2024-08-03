@@ -43,20 +43,31 @@ inputForm:{
     padding: 10
    },
    smsContainer:{
-    padding: 8,
+    padding: 5,
     backgroundColor: '#85597F',
     borderBlockColor: "red",
     marginBottom: 20,
     borderRadius: 25
    },
    sms:{
-    fontSize: 16,
-    color: '#fff',
-    padding: 8
+      fontSize: 16,
+      color: '#fff',
+      padding: 8
    },
    flutua:{
     flex: 1,  
     justifyContent: 'center',  
     alignItems: 'center',
+   },
+   user:{
+      fontSize: 16,
+      fontWeight: 'bold',
+      color: '#111',
+      paddingLeft: 8
+   },
+   data:{
+      fontSize: 12,
+      color: '#111',
+      paddingLeft: 8
    }
 })

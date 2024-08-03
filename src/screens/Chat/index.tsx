@@ -6,6 +6,7 @@ import { firestore } from 'src/services/firebaseConfig';
 import { HeaderPage } from "@components/HeaderPage/Index";
 import { PerfilResume } from "@components/PerfilResume";
 import { getCurrentPositionAsync } from 'expo-location';
+import { format } from 'date-fns';
 
 export function Chat() {
   const context = useContext(Context);
@@ -97,7 +98,9 @@ export function Chat() {
           keyExtractor={item => item.id}
           renderItem={({ item }) => (
             <View style={styles.smsContainer}>
+              <Text style={styles.user}>{item.user}:</Text>
               <Text style={styles.sms}>{item.text}</Text>
+              <Text style={styles.data}>{format(new Date(item.createdAt.seconds * 1000), 'PPpp')}</Text>
             </View>
           )}
         />
