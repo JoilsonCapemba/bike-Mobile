@@ -23,8 +23,12 @@ export function Menu(){
                     <Text style={styles.btnText}>PERFIL</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.btn} >
+                <TouchableOpacity style={styles.btn} onPress={()=>navigation.navigate('sendPoints')}>
                     <Text style={styles.btnText}>ENVIAR PONTOS</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.btn} onPress={()=>navigation.navigate('chat')}>
+                    <Text style={styles.btnText}>MENSAGENS</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.btn}  onPress={()=>navigation.navigate('login')}>

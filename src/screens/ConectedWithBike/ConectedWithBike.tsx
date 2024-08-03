@@ -54,7 +54,7 @@ export function ConectedWithBike(){
         <HeaderPage />
         <PerfilResume/>
         <View style={styles.contentMenu}>
-          <View >
+          {/* <View >
             <TouchableOpacity onPress={()=> navigation.navigate('sendPoints')}>
               <Image source={require('@assets/chat-solid-24.png')} style={styles.imgLog}/>
               <Text style={styles.logoTitle}>share Point</Text>
@@ -65,7 +65,7 @@ export function ConectedWithBike(){
               <Image source={require('@assets/chat-solid-24.png')} style={styles.imgLog}/>
               <Text style={styles.logoTitle}>Chat</Text>
             </TouchableOpacity>
-          </View>
+          </View> */}
         </View>
       </View>
       {
