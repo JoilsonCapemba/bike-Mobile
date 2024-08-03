@@ -1,22 +1,10 @@
-import axios from "axios"
-import {DOMParser} from 'xmldom';
-import {xml2json} from 'xml-js'
-import {XMLParser} from 'fast-xml-parser';
+import axios from "axios";
+import { XMLParser } from 'fast-xml-parser';
 
-
-type Userprops = {
-    name: string
-    email: string
-    telefone: string
-    senha: string
-    tipo: number 
-    enderecoMac: string
-}
-
-const url = 'https://90b6-129-122-244-245.ngrok-free.app/ws/users.wsdl'
+const url = 'https://90b6-129-122-244-245.ngrok-free.app/ws/users.wsdl';
 
 export const createUser = async (user) => {
-    console.log('entrou', user); // Verifique se todos os dados estão sendo passados
+    console.log('entrou', user);
     try {
         const xmls = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:int="http://interfaces.uan.com">
                     <soapenv:Header/>
@@ -42,9 +30,7 @@ export const createUser = async (user) => {
         });
 
         console.log('Resposta do servidor:', response.data);
-        
-        // Adicione lógica para analisar e processar a resposta se necessário
-        
+
         return response.data;
     } catch (error) {
         console.error('Erro ao criar usuário:', error);
@@ -52,10 +38,10 @@ export const createUser = async (user) => {
     }
 };
 
-export const loginService = async (telefone: string, password: string)  => {
-    console.log('entrou')
-    try{
-        const xmls =`<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:int="http://interfaces.uan.com">
+export const loginService = async (telefone, password) => {
+    console.log('entrou');
+    try {
+        const xmls = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:int="http://interfaces.uan.com">
                     <soapenv:Header/>
                     <soapenv:Body>
                         <int:loginRequest>
@@ -64,84 +50,80 @@ export const loginService = async (telefone: string, password: string)  => {
                             <int:wifiCodig></int:wifiCodig>
                         </int:loginRequest>
                     </soapenv:Body>
-                    </soapenv:Envelope>`
+                    </soapenv:Envelope>`;
 
-        let env = null
-                
-        const response = await axios.post(url, xmls,
-            {
-                headers:{
-                    'Content-Type': 'text/xml'
-                }
+        const response = await axios.post(url, xmls, {
+            headers: {
+                'Content-Type': 'text/xml'
             }
-        )
-        const parser = new XMLParser()
-        const jsonRes = parser.parse(response.data)
-        const loginRes = jsonRes['SOAP-ENV:Envelope']['SOAP-ENV:Body']['ns2:loginResponse']
-        
-            const name = loginRes['ns2:name']
-            const email = loginRes['ns2:email']
-            const telephone = loginRes['ns2:telephone']
-            const saldo = loginRes['ns2:saldo']
-            const id = loginRes['ns2:id']
-            const token = loginRes['ns2:token']
-            const type = loginRes['ns2:type']
-        
-            const user = {
-                id: id,
-                name: name,
-                email: email,
-                telephone: telephone,
-                saldo: saldo,
-                token: token,
-                type: type
-            }
+        });
 
-            console.log(user)
+        const parser = new XMLParser();
+        const jsonRes = parser.parse(response.data);
+        const loginRes = jsonRes['SOAP-ENV:Envelope']['SOAP-ENV:Body']['ns2:loginResponse'];
 
-            if(type == 0) return null
+        const name = loginRes['ns2:name'];
+        const email = loginRes['ns2:email'];
+        const telephone = loginRes['ns2:telephone'];
+        const saldo = loginRes['ns2:saldo'];
+        const id = loginRes['ns2:id'];
+        const token = loginRes['ns2:token'];
+        const type = loginRes['ns2:type'];
 
-            return user
-        
+        const user = {
+            id: id,
+            name: name,
+            email: email,
+            telephone: telephone,
+            saldo: saldo,
+            token: token,
+            type: type
+        };
 
-    }
-    catch(error){
+        console.log(user);
+
+        if (type == 0) return null;
+
+        return user;
+    } catch (error) {
         console.error('Erro ao fazer login:', error);
         throw new Error('Erro ao fazer login.');
     }
-}
-/*
+};
 
-const response = await axios.post(url, requestBody, config);
-    const parser = new XMLParser();
-    const jsonResponse = parser.parse(response.data);
-    const loginResponse =
-      jsonResponse['SOAP-ENV:Envelope']['SOAP-ENV:Body']['ns2:UserResponse'];
-    const estado = loginResponse['ns2:estado'];
-    if (estado) {
-      const userIdCiclista = loginResponse['ns2:ciclistaId'];
-      const emailUser = loginResponse['ns2:email'];
-      const name = loginResponse['ns2:nome'];
-      const lastName = loginResponse['ns2:sobrenome'];
-      const avatarUrl = loginResponse['ns2:avatarUrl'];
-      const token = loginResponse['ns2:token'];
-      return {
-        userIdCiclista: userIdCiclista,
-        estado: estado,
-        token: token,
-        email: emailUser,
-        name: name,
-        lastName: lastName,
-        avatarUrl: avatarUrl,
-      };
-    } else {
-      const message = loginResponse['ns2:mensagem'];
-      return {estado: estado, message: message};
+export const sendPointsService = async (telefoneDe, telefonePara, saldo) => {
+    console.log('Enviando pontos');
+    try {
+        const xmls = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:int="http://interfaces.uan.com">
+                        <soapenv:Header/>
+                        <soapenv:Body>
+                            <int:sendPointRequest>
+                                <int:telephoneFrom>${telefoneDe}</int:telephoneFrom>
+                                <int:telephoneReceiver>${telefonePara}</int:telephoneReceiver>
+                                <int:saldo>${saldo}</int:saldo>
+                            </int:sendPointRequest>
+                        </soapenv:Body>
+                    </soapenv:Envelope>`;
+
+        const response = await axios.post(url, xmls, {
+            headers: {
+                'Content-Type': 'text/xml'
+            }
+        });
+
+        const parser = new XMLParser();
+        const jsonRes = parser.parse(response.data);
+        const serviceStatus = jsonRes['SOAP-ENV:Envelope']['SOAP-ENV:Body']['ns2:sendPointResponse']['ns2:serviceStatus'];
+
+        if (serviceStatus['ns2:status'] === 'SUCCESS') {
+            console.log('Pontos enviados com sucesso');
+            return true;
+        } else {
+            console.error('Falha ao enviar pontos:', serviceStatus['ns2:mensagem']);
+            throw new Error(serviceStatus['ns2:mensagem']);
+        }
+    } catch (error) {
+        console.error('Erro ao enviar pontos:', error);
+        throw new Error('Erro ao enviar pontos.');
     }
-  } catch (error) {
-    console.log('Erro ao fazer requisição:', error);
-    return {error: error};
-  }
-}
-
-*/
+};

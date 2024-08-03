@@ -8,13 +8,13 @@ import { Menu } from "@screens/Menu";
 import { Perfil } from "@screens/Perfil";
 import { Station } from "@screens/Station";
 import { StationsBike } from "@screens/StationsBike";
-
+import { SendPoints } from "@screens/SharePoint";
 
 export function AppRoutes(){
 
-  const {Navigator, Screen} = createNativeStackNavigator()
+  const { Navigator, Screen } = createNativeStackNavigator();
   
-  return(
+  return (
     <Navigator screenOptions={{headerShown: false}}>
       <Screen
         name="getStarted"
@@ -52,6 +52,10 @@ export function AppRoutes(){
         name="chat"
         component={Chat}
       />
+      <Screen
+        name="sendPoints"
+        component={SendPoints}
+      />
     </Navigator>
-  )
+  );
 }

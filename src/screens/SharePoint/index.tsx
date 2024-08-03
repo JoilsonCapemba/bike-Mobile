@@ -1,81 +1,52 @@
-import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, Image, Alert } from "react-native";
+import React, { useContext, useState } from "react";
+import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { createUser } from 'src/services/UserServices';
-import { styles } from "./style";
+import { Context } from "src/context"; 
+import { sendPointsService } from 'src/services/UserServices';
+import { styles } from "./style"; 
 
-export function CreateAccount() {
-  const navigation = useNavigation();
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [telephone, setTelephone] = useState('');
-  const [password, setPassword] = useState('');
+export function SendPoints() {
+    const context = useContext(Context);
+    const navigation = useNavigation();
+    const [telefoneReceptor, setTelefoneReceptor] = useState('');
+    const [saldo, setSaldo] = useState('');
 
-  async function handleCreateAccount() {
-    try {
-      const user = {
-        name: name,
-        email: email,
-        telephone: telephone,
-        password: password,
-        type: 1, // Suponha que 1 seja o tipo de usuário padrão
-        macAddress: 'XX:XX:XX:XX:XX:XX' // Substitua pelo valor apropriado ou obtenha dinamicamente
-      };
-
-      console.log(user); // Adicione esta linha para verificar se os campos estão sendo preenchidos corretamente
-
-      const response = await createUser(user);
-
-      if (response) {
-        Alert.alert('Conta criada com sucesso!', 'Você pode agora fazer login.');
-        navigation.navigate('login');
-      }
-    } catch (error) {
-      Alert.alert('Erro ao criar conta', error.message);
+    async function handleSendPoints() {
+        try {
+            const success = await sendPointsService(context.telephone, telefoneReceptor, parseInt(saldo));
+            if (success) {
+                Alert.alert('Sucesso', 'Pontos enviados com sucesso');
+                // navigation.navigate('menu');
+            }
+        } catch (error) {
+            Alert.alert('Erro', error.message);
+        }
     }
-  }
 
-  return (
-    <View style={styles.container}>
-      <Image source={require('@assets/Logo.png')} />
-      <Text style={styles.logoTitle}>BikeShare</Text>
+    return (
+        <View style={styles.container}>
+            <Text style={styles.title}>Enviar Pontos</Text>
+            
+            <TextInput
+                style={styles.inputForm}
+                placeholder="Telefone do Receptor"
+                placeholderTextColor={'#fff'}
+                onChangeText={setTelefoneReceptor}
+                value={telefoneReceptor}
+            />
 
-      <TextInput
-        style={styles.inputForm}
-        placeholder="Informe o Nome do destinatario"
-        placeholderTextColor={'#fff'}
-        value={name}
-        onChangeText={setName}
-      />
+            <TextInput
+                style={styles.inputForm}
+                placeholder="Quantidade de Pontos"
+                placeholderTextColor={'#fff'}
+                keyboardType="numeric"
+                onChangeText={setSaldo}
+                value={saldo}
+            />
 
-      <TextInput
-        style={styles.inputForm}
-        placeholder="Informe Numero de telefone "
-        placeholderTextColor={'#fff'}
-        value={email}
-        onChangeText={setEmail}
-      />
-
-      <TextInput
-        style={styles.inputForm}
-        placeholder="Informe os pontos que desejanvsrregar"
-        placeholderTextColor={'#fff'}
-        value={telephone}
-        onChangeText={setTelephone}
-      />
-
-      <TextInput
-        style={styles.inputForm}
-        placeholder="Informe a sua senha"
-        placeholderTextColor={'#fff'}
-        secureTextEntry={true}
-        value={password}
-        onChangeText={setPassword}
-      />
-
-      <TouchableOpacity style={styles.btnGetStarted} onPress={handleCreateAccount}>
-        <Text style={styles.btnText}>Criar Conta</Text>
-      </TouchableOpacity>
-    </View>
-  );
+            <TouchableOpacity style={styles.btnSendPoints} onPress={handleSendPoints}>
+                <Text style={styles.btnText}>Enviar Pontos</Text>
+            </TouchableOpacity>
+        </View>
+    );
 }
