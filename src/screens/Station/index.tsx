@@ -79,6 +79,7 @@ export function Station() {
       if (sucesso) {
         console.log('Bicicleta levantada com sucesso');
         Alert.alert('Bicicleta levantada com sucesso');
+        navigation.navigate('conectedWithBike');
         // Atualize a UI ou estado conforme necessário
       } else {
         console.log('Falha ao levantar bicicleta');
