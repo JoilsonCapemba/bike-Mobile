@@ -4,8 +4,44 @@ import { XMLParser } from 'fast-xml-parser';
 // URL do endpoint SOAP
 const endpointUrl = 'https://90b6-129-122-244-245.ngrok-free.app/ws';
 
+export const levantarBicicleta = async (stationId: number, dockId: number) => { // Corrigi o tipo para 'number'
+  console.log('Levantando bicicleta do dock');
+  try {
+    const xmls = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:int="http://interfaces.uan.com">
+                    <soapenv:Header/>
+                    <soapenv:Body>
+                      <int:LevantarBicicletaRequest>
+                        <int:stationId>${stationId}</int:stationId>
+                        <int:dockId>${dockId}</int:dockId>
+                      </int:LevantarBicicletaRequest>
+                    </soapenv:Body>
+                  </soapenv:Envelope>`;
+
+    const response = await axios.post(endpointUrl, xmls, {
+      headers: {
+        'Content-Type': 'text/xml',
+      },
+    });
+
+    const parser = new XMLParser({
+      ignoreAttributes: false,
+      attributeNamePrefix: ""
+    });
+
+    console.log('Resposta SOAP:', response.data);
+
+    const jsonRes = parser.parse(response.data);
+    const sucesso = jsonRes['SOAP-ENV:Envelope']['SOAP-ENV:Body']['ns2:LevantarBicicletaResponse']['ns2:success'];
+
+    return sucesso;
+  } catch (error) {
+    console.error('Erro ao levantar bicicleta:', error);
+    throw new Error('Erro ao levantar bicicleta.');
+  }
+};
+
 export const getStations = async () => {
-  console.log('Fetching all stations');
+  console.log('Buscando todas as estações');
   try {
     const xmls = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:int="http://interfaces.uan.com">
                     <soapenv:Header/>
@@ -39,7 +75,7 @@ export const getStations = async () => {
 };
 
 export const getStation = async (stationName: string) => {
-  console.log('Fetching station details');
+  console.log('Buscando detalhes da estação');
   try {
     const xmls = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:int="http://interfaces.uan.com">
                     <soapenv:Header/>
@@ -61,14 +97,12 @@ export const getStation = async (stationName: string) => {
       attributeNamePrefix: ""
     });
 
-    // Adicione logs para depurar a resposta SOAP
-    console.log('SOAP Response:', response.data);
+    console.log('Resposta SOAP:', response.data);
 
     const jsonRes = parser.parse(response.data);
     const stationRes = jsonRes['SOAP-ENV:Envelope']['SOAP-ENV:Body']['ns2:GetStationResponse']['ns2:station'];
 
-    // Adicione logs para depurar a estrutura da resposta JSON
-    console.log('Parsed JSON Response:', jsonRes);
+    console.log('Resposta JSON analisada:', jsonRes);
 
     const stationDetails = {
       id: parseInt(stationRes['ns2:id']),
