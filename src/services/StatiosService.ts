@@ -4,6 +4,42 @@ import { XMLParser } from 'fast-xml-parser';
 // URL do endpoint SOAP
 const endpointUrl = 'https://90b6-129-122-244-245.ngrok-free.app/ws';
 
+export const entregarBicicleta = async (stationId: number, dockId: number) => {
+  console.log('Devolvendo bicicleta no dock');
+  try {
+    const xmls = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:int="http://interfaces.uan.com">
+                    <soapenv:Header/>
+                    <soapenv:Body>
+                      <int:EntregarBicicletaRequest>
+                        <int:stationId>${stationId}</int:stationId>
+                        <int:dockId>${dockId}</int:dockId>
+                      </int:EntregarBicicletaRequest>
+                    </soapenv:Body>
+                  </soapenv:Envelope>`;
+
+    const response = await axios.post(endpointUrl, xmls, {
+      headers: {
+        'Content-Type': 'text/xml',
+      },
+    });
+
+    const parser = new XMLParser({
+      ignoreAttributes: false,
+      attributeNamePrefix: ""
+    });
+
+    console.log('Resposta SOAP:', response.data);
+
+    const jsonRes = parser.parse(response.data);
+    const sucesso = jsonRes['SOAP-ENV:Envelope']['SOAP-ENV:Body']['ns2:EntregarBicicletaResponse']['ns2:success'];
+
+    return sucesso;
+  } catch (error) {
+    console.error('Erro ao devolver bicicleta:', error);
+    throw new Error('Erro ao devolver bicicleta.');
+  }
+};
+
 export const levantarBicicleta = async (stationId: number, dockId: number) => { // Corrigi o tipo para 'number'
   console.log('Levantando bicicleta do dock');
   try {
