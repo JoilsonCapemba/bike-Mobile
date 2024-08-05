@@ -2,7 +2,7 @@ import axios from 'axios';
 import { XMLParser } from 'fast-xml-parser';
 
 // URL do endpoint SOAP
-const endpointUrl = 'https://90b6-129-122-244-245.ngrok-free.app/ws';
+const endpointUrl = 'https://56ba-102-216-56-154.ngrok-free.app/ws';
 
 export const entregarBicicleta = async (stationId: number, dockId: number) => {
   console.log('Devolvendo bicicleta no dock');

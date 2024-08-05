@@ -1,7 +1,7 @@
 import axios from "axios";
 import { XMLParser } from 'fast-xml-parser';
 
-const url = 'https://90b6-129-122-244-245.ngrok-free.app/ws/users.wsdl';
+const url = 'https://56ba-102-216-56-154.ngrok-free.app/ws/users.wsdl';
 
 export const createUser = async (user) => {
     console.log('entrou', user);

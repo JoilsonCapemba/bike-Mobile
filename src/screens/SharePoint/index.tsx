@@ -16,7 +16,7 @@ export function SendPoints() {
             const success = await sendPointsService(context.telephone, telefoneReceptor, parseInt(saldo));
             if (success) {
                 Alert.alert('Sucesso', 'Pontos enviados com sucesso');
-                // navigation.navigate('menu');
+                navigation.navigate('menu');
             }
         } catch (error) {
             Alert.alert('Erro', error.message);
