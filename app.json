@@ -15,7 +15,8 @@
       "supportsTablet": true,
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "This app uses your location to show nearby users."
-      }
+      },
+      "bundleIdentifier": "com.uan.bikeshared"
     },
     "android": {
       "adaptiveIcon": {
@@ -25,10 +26,12 @@
       "permissions": [
         "ACCESS_FINE_LOCATION",
         "ACCESS_COARSE_LOCATION"
-      ]
+      ],
+      "package": "com.uan.mobile"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "scheme": "bikesharedapp"
   }
 }
