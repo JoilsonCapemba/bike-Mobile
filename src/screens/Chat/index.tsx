@@ -1,14 +1,16 @@
 import React, { useContext, useState, useEffect } from "react";
-import { View, Text, TextInput, TouchableOpacity, FlatList, Image } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, FlatList, Image, Alert } from "react-native";
 import { styles } from "./style";
+import { useNavigation } from "@react-navigation/native";
 import { Context } from "src/context";
 import { firestore } from 'src/services/firebaseConfig';
 import { HeaderPage } from "@components/HeaderPage/Index";
 import { PerfilResume } from "@components/PerfilResume";
-import { getCurrentPositionAsync } from 'expo-location';
+import * as Location from 'expo-location';
 import { format } from 'date-fns';
 
 export function Chat() {
+  const navigation = useNavigation();
   const context = useContext(Context);
   const [messages, setMessages] = useState([]);
   const [sms, SetSms] = useState('');
@@ -20,6 +22,13 @@ export function Chat() {
   };
 
   useEffect(() => {
+    (async () => {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert('Permissão necessária', 'Permissão de localização é necessária para enviar mensagens.');
+      }
+    })();
+
     const unsubscribe = firestore.collection('messages')
       .orderBy('createdAt', 'desc')
       .onSnapshot((snapshot) => {
@@ -35,7 +44,7 @@ export function Chat() {
 
   async function handleSendSMS() {
     try {
-      const { coords } = await getCurrentPositionAsync();
+      const { coords } = await Location.getCurrentPositionAsync();
       const userLocation = {
         latitude: coords.latitude,
         longitude: coords.longitude
@@ -62,11 +71,11 @@ export function Chat() {
         });
         SetSms('');
       } else {
-        alert('Usuário não está próximo.');
+        Alert.alert('Usuário não está próximo.');
       }
     } catch (error) {
       console.error('Erro ao obter localização:', error);
-      alert('Erro ao obter localização.');
+      Alert.alert('Erro ao obter localização.');
     }
   }
 
