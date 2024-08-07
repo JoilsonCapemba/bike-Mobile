@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
    color: '#fff',
    fontSize: 34,
    fontWeight: '700',
-   marginTop: -40,
+   marginTop: -30,
    marginBottom: 40
  },
  btnGetStarted:{
@@ -19,7 +19,8 @@ export const styles = StyleSheet.create({
    width: 150,
    height: 50,
    borderRadius: 10,
-   marginTop: 20
+   marginTop: 10,
+   justifyContent: 'center',
  },
  btnText: {
    fontSize: 24,
@@ -33,7 +34,7 @@ export const styles = StyleSheet.create({
   height: 50,
   borderRadius: 10,
   width: 300,
-  marginBottom: 35,
+  marginBottom: 20,
   padding: 10,
   color: '#fff',
   fontSize: 18

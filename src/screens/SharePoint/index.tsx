@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, Alert, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Context } from "src/context";
 import { styles } from "./style";
@@ -26,7 +26,6 @@ export function SendPoints() {
 
   async function handleSendPoints() {
     try {
-      console.log('Enviando pontos de:', context.telephone, 'para:', telefoneReceptor, 'quantidade:', saldo);
       const success = await sendPointsService(context.telephone, telefoneReceptor, parseInt(saldo));
       if (success) {
         Alert.alert('Sucesso', 'Pontos enviados com sucesso');
@@ -69,43 +68,52 @@ export function SendPoints() {
         Alert.alert('Erro', 'Falha ao selecionar o arquivo');
       }
     } catch (error) {
-      console.error('Erro ao carregar número de telefone:', error);
+      Alert.alert('Erro', 'Ocorreu um erro ao carregar o número de telefone');
     }
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Enviar Pontos</Text>
-      
-      <TouchableOpacity style={styles.btnSendPoints} onPress={handleLoadNumber}>
-        <Text style={styles.btnText}>Carregar Número</Text> 
-      </TouchableOpacity>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.container}>
+          <Text style={styles.title}>Enviar Pontos</Text>
+          
+          <TouchableOpacity style={styles.btnSendPoints} onPress={handleLoadNumber}>
+            <Text style={styles.btnText}>Carregar Número</Text> 
+          </TouchableOpacity>
 
-      <TextInput
-        style={styles.inputForm}
-        placeholder="Quantidade de Pontos"
-        placeholderTextColor={'#fff'}
-        keyboardType="numeric"
-        onChangeText={setSaldo}
-        value={saldo}
-      />
+          <TextInput
+            style={styles.inputForm}
+            placeholder="Quantidade de Pontos"
+            placeholderTextColor={'#fff'}
+            keyboardType="numeric"
+            onChangeText={setSaldo}
+            value={saldo}
+            onBlur={Keyboard.dismiss}
+          />
 
-      <TextInput
-        style={styles.inputForm}
-        placeholder="Telefone do Receptor"
-        placeholderTextColor={'#fff'}
-        onChangeText={setTelefoneReceptor}
-        value={telefoneReceptor}
-        editable={false} 
-      />
+          <TextInput
+            style={styles.inputForm}
+            placeholder="Telefone do Receptor"
+            placeholderTextColor={'#fff'}
+            onChangeText={setTelefoneReceptor}
+            value={telefoneReceptor}
+            editable={false} 
+            onBlur={Keyboard.dismiss}
+          />
 
-      <TouchableOpacity style={styles.btnSendPoints} onPress={handleSendPoints}>
-        <Text style={styles.btnText}>Enviar Pontos</Text>
-      </TouchableOpacity>
+          <TouchableOpacity style={styles.btnSendPoints} onPress={handleSendPoints}>
+            <Text style={styles.btnText}>Enviar Pontos</Text>
+          </TouchableOpacity>
 
-      <TouchableOpacity style={styles.btnSendPoints} onPress={handleConnect}>
-        <Text style={styles.btnText}>Conectar via AirDrop</Text>
-      </TouchableOpacity>
-    </View>
+          <TouchableOpacity style={styles.btnSendPoints} onPress={handleConnect}>
+            <Text style={styles.btnText}>Conectar via AirDrop</Text>
+          </TouchableOpacity>
+        </View>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 }

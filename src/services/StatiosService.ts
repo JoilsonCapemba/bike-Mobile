@@ -105,7 +105,6 @@ export const getStations = async () => {
     console.log(results);
     return results;
   } catch (error) {
-    console.error('Erro ao buscar estações:', error);
     throw new Error('Erro ao buscar estações.');
   }
 };
@@ -154,7 +153,6 @@ export const getStation = async (stationName: string) => {
     console.log(stationDetails);
     return stationDetails;
   } catch (error) {
-    console.error('Erro ao buscar estação:', error);
     throw new Error('Erro ao buscar estação.');
   }
 };

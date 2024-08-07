@@ -92,7 +92,6 @@ export const loginService = async (telefone, password) => {
 };
 
 export const sendPointsService = async (telefoneDe, telefonePara, saldo) => {
-    console.log('Enviando pontos');
     try {
         const xmls = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:int="http://interfaces.uan.com">
                         <soapenv:Header/>
@@ -119,12 +118,11 @@ export const sendPointsService = async (telefoneDe, telefonePara, saldo) => {
             console.log('Pontos enviados com sucesso');
             return true;
         } else {
-            console.error('Falha ao enviar pontos:', serviceStatus['ns2:mensagem']);
+            console.log('Falha ao enviar pontos:', serviceStatus['ns2:mensagem']);
             throw new Error(serviceStatus['ns2:mensagem']);
         }
     } catch (error) {
-        console.error('Erro ao enviar pontos:', error);
-        throw new Error('Erro ao enviar pontos.');
+        throw new Error('Erro ao enviar pontos, verifique se os campos estão preenchidos.');
     }
 };
 

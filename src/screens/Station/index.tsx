@@ -54,7 +54,7 @@ export function Station() {
           description: stationData.name
         });
       } catch (error) {
-        console.error('Erro ao buscar detalhes da estação:', error);
+        Alert.alert('Erro ao buscar detalhes da estação:', error);
       }
     };
 
@@ -77,12 +77,10 @@ export function Station() {
       const selectedDockId = 1; // Exemplo de como definir o selectedDockId
       const sucesso = await levantarBicicleta(station.id, selectedDockId); // Certifique-se de que selectedDockId está definido corretamente
       if (sucesso) {
-        console.log('Bicicleta levantada com sucesso');
         Alert.alert('Bicicleta levantada com sucesso');
         navigation.navigate('conectedWithBike');
         // Atualize a UI ou estado conforme necessário
       } else {
-        console.log('Falha ao levantar bicicleta');
         Alert.alert('Falha ao levantar bicicleta');
       }
     } catch (error) {
