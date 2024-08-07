@@ -31,6 +31,7 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: 20,
   },
   btnText: {
     fontSize: 18,
