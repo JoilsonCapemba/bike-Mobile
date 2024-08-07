@@ -127,3 +127,36 @@ export const sendPointsService = async (telefoneDe, telefonePara, saldo) => {
         throw new Error('Erro ao enviar pontos.');
     }
 };
+
+export const getSaldoService = async (userId) => {
+    console.log('Obtendo saldo');
+    try {
+        const xmls = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:int="http://interfaces.uan.com">
+                        <soapenv:Header/>
+                        <soapenv:Body>
+                            <int:getSaldoRequest>
+                                <int:userId>${userId}</int:userId>
+                            </int:getSaldoRequest>
+                        </soapenv:Body>
+                    </soapenv:Envelope>`;
+
+        const response = await axios.post(url, xmls, {
+            headers: {
+                'Content-Type': 'text/xml'
+            }
+        });
+
+        const parser = new XMLParser();
+        const jsonRes = parser.parse(response.data);
+        const saldoResponse = jsonRes['SOAP-ENV:Envelope']['SOAP-ENV:Body']['ns2:getSaldoResponse'];
+
+        const saldo = saldoResponse['ns2:saldo'];
+
+        console.log('Saldo obtido:', saldo, userId);
+
+        return saldo;
+    } catch (error) {
+        console.error('Erro ao obter saldo:', error);
+        throw new Error('Erro ao obter saldo.');
+    }
+};
